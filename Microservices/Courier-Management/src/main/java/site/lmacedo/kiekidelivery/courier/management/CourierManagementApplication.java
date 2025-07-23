@@ -1,4 +1,4 @@
-package site.lmacedo.kiekidelivery.Courier_Management;
+package site.lmacedo.kiekidelivery.courier.management;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

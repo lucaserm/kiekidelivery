@@ -1,4 +1,4 @@
-package site.lmacedo.kiekidelivery.Courier_Management;
+package site.lmacedo.kiekidelivery.courier.management;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
