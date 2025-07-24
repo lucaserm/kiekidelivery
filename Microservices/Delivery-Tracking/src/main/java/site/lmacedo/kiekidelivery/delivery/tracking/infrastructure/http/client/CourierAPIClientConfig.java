@@ -9,8 +9,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class CourierAPIClientConfig {
-    @Value("{api.courier.base-url}")
-    private String courierAPIBaseUrl;
+//    @Value("{api.courier.baseUrl}")
+    private String courierAPIBaseUrl = "localhost:3031";
 
     @Bean
     public CourierAPIClient courierAPIClient(RestClient.Builder builder) {

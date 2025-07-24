@@ -2,6 +2,10 @@ package site.lmacedo.kiekidelivery.delivery.tracking.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.domain.AbstractAggregateRoot;
+import site.lmacedo.kiekidelivery.delivery.tracking.domain.event.DeliveryFulfilledEvent;
+import site.lmacedo.kiekidelivery.delivery.tracking.domain.event.DeliveryPickUpEvent;
+import site.lmacedo.kiekidelivery.delivery.tracking.domain.event.DeliveryPlacedEvent;
 import site.lmacedo.kiekidelivery.delivery.tracking.domain.exception.DomainException;
 
 import java.math.BigDecimal;
@@ -14,10 +18,10 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Setter(AccessLevel.PRIVATE)
 @Getter
-public class Delivery {
+public class Delivery extends AbstractAggregateRoot<Delivery> {
 
     @Id
     @EqualsAndHashCode.Include
@@ -112,17 +116,20 @@ public class Delivery {
         this.verifyIfCanBePlaced();
         this.changeStatusTo(DeliveryStatus.WAITING_FOR_COURIER);
         this.setPlacedAt(OffsetDateTime.now());
+        this.registerEvent(new DeliveryPlacedEvent(this.getPlacedAt(), this.getId()));
     }
 
     public void pickUp(UUID courierId) {
         this.courierId = courierId;
         this.changeStatusTo(DeliveryStatus.IN_TRANSIT);
         this.setAssignedAt(OffsetDateTime.now());
+        this.registerEvent(new DeliveryPickUpEvent(this.getAssignedAt(), this.getId()));
     }
 
     public void markAsDelivered() {
         this.changeStatusTo(DeliveryStatus.DELIVERED);
         this.setFulfilledAt(OffsetDateTime.now());
+        this.registerEvent(new DeliveryFulfilledEvent(this.getFulfilledAt(), this.getId()));
     }
 
     public List<Item> getItems() {

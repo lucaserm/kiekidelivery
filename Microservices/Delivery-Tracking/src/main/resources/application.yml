@@ -1,0 +1,25 @@
+server.port: 3030
+spring:
+  application:
+    name: delivery-tracking
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kieki
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        default_schema: deliverydb
+    hibernate:
+      ddl-auto: update
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping:
+            delivery-placed-event:site.lmacedo.kiekidelivery.delivery.tracking.domain.event.DeliveryPlacedEvent,
+            delivery-pickup-event:site.lmacedo.kiekidelivery.delivery.tracking.domain.event.DeliveryPickUpEvent,
+            delivery-fulfilled-event:site.lmacedo.kiekidelivery.delivery.tracking.domain.event.DeliveryFulfilledEvent
