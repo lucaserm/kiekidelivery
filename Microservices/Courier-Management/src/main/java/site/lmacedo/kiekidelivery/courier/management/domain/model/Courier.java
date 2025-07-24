@@ -1,4 +1,4 @@
-package site.lmacedo.kiekidelivery.delivery.tracking.infrastructure.model;
+package site.lmacedo.kiekidelivery.courier.management.domain.model;
 
 
 import lombok.*;

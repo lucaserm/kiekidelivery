@@ -1,8 +1,9 @@
-package site.lmacedo.kiekidelivery.courier.management.domain.model;
+package site.lmacedo.kiekidelivery.delivery.tracking.domain.model;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DeliveryStatusTest {
 

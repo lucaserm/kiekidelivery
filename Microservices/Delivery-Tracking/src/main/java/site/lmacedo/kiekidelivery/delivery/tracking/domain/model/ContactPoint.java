@@ -1,11 +1,11 @@
-package site.lmacedo.kiekidelivery.courier.management.domain.model;
+package site.lmacedo.kiekidelivery.delivery.tracking.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import jakarta.persistence.Embeddable;
+import lombok.*;
 
+@Embeddable
 @EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 @Builder
 @Getter

@@ -1,8 +1,8 @@
-package site.lmacedo.kiekidelivery.courier.management.domain.model;
+package site.lmacedo.kiekidelivery.delivery.tracking.domain.model;
 
 import java.time.OffsetDateTime;
 
-public class DeliveryPlacedEvent {
+public class DeliveryFulfilledEvent {
     private OffsetDateTime occurredAt;
     private String deliveryId;
 }

@@ -1,7 +1,7 @@
-package site.lmacedo.kiekidelivery.courier.management.domain.model;
+package site.lmacedo.kiekidelivery.delivery.tracking.domain.model;
 
 import org.junit.jupiter.api.Test;
-import site.lmacedo.kiekidelivery.courier.management.domain.exception.DomainException;
+import site.lmacedo.kiekidelivery.delivery.tracking.domain.exception.DomainException;
 
 import java.math.BigDecimal;
 import java.time.Duration;

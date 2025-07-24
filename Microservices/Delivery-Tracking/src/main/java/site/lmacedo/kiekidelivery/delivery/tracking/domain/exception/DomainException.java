@@ -1,4 +1,4 @@
-package site.lmacedo.kiekidelivery.courier.management.domain.exception;
+package site.lmacedo.kiekidelivery.delivery.tracking.domain.exception;
 
 public class DomainException extends RuntimeException{
     public DomainException() {
