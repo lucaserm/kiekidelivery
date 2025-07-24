@@ -9,7 +9,7 @@ RUN mvn dependency:go-offline -B -Dmaven.repo.local=/root/.m2/repository
 COPY . .
 
 RUN chmod +x mvnw
-RUN ./mvnw clean install -B -DskipTests
+RUN ./mvnw clean install -B
 
 FROM eclipse-temurin:23-alpine AS runner
 
