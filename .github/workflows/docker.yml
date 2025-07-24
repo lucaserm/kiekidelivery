@@ -36,3 +36,21 @@ jobs:
           file: ./Microservices/Delivery-Tracking/dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/apps:${{ github.event.repository.name }}-${{ github.ref_name }}-delivery-latest
+
+
+      - name: Build and push Docker Gateway image
+        uses: docker/build-push-action@v3.0.0
+        with:
+          context: ./Microservices/Gateway
+          file: ./Microservices/Gateway/dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/apps:${{ github.event.repository.name }}-${{ github.ref_name }}-gateway-latest
+
+
+      - name: Build and push Docker Discovery image
+        uses: docker/build-push-action@v3.0.0
+        with:
+          context: ./Microservices/Service-Registry
+          file: ./Microservices/Service-Registry/dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/apps:${{ github.event.repository.name }}-${{ github.ref_name }}-discovery-latest
