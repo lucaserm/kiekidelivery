@@ -1,0 +1,1063 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "KiekiDelivery",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Deliveries"
+    },
+    {
+      "name": "Couriers"
+    }
+  ],
+  "paths": {
+    "/api/v1/deliveries/{deliveryId}/placement": {
+      "post": {
+        "summary": "Submete uma encomenda para processamento.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "placeDelivery",
+        "tags": [
+          "Deliveries"
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "description": "ID da encomenda a ser submetida.",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "encomenda submetida com sucesso.",
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "headers": {}
+          },
+          "404": {
+            "description": "encomenda não encontrada.",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/deliveries/{deliveryId}/pickups": {
+      "post": {
+        "summary": "Registra a retirada de uma encomenda pelo entregador.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "pickupDelivery",
+        "tags": [
+          "Deliveries"
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "description": "ID da encomenda a ser marcada como retirada.",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "encomenda marcada como retirada com sucesso.",
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "headers": {}
+          },
+          "404": {
+            "description": "encomenda não encontrada.",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/deliveries/{deliveryId}/completion": {
+      "post": {
+        "summary": "Registra a conclusão (entrega) de uma encomenda.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "completeDelivery",
+        "tags": [
+          "Deliveries"
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "description": "ID da encomenda a ser marcada como concluída.",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "encomenda marcada como concluída com sucesso.",
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "headers": {}
+          },
+          "404": {
+            "description": "encomenda não encontrada.",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/deliveries": {
+      "post": {
+        "summary": "Cria um rascunho de uma nova encomenda.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "draftDelivery",
+        "tags": [
+          "Deliveries"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeliveryInput"
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Rascunho da encomenda criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Delivery"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida (erros de validação).",
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "Lista todas as entregas com paginação.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "findAllDeliveries",
+        "tags": [
+          "Deliveries"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página (baseado em zero).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Número de elementos por página.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de entregas paginada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelDelivery"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/deliveries/{deliveryId}": {
+      "get": {
+        "summary": "Busca uma encomenda pelo ID.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "findDeliveryById",
+        "tags": [
+          "Deliveries"
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "description": "ID da encomenda a ser buscada.",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "encomenda encontrada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Delivery"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "404": {
+            "description": "encomenda não encontrada.",
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "Edita os detalhes de uma encomenda existente.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "editDelivery",
+        "tags": [
+          "Deliveries"
+        ],
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "description": "ID da encomenda a ser editada.",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeliveryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "encomenda editada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Delivery"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida (erros de validação ou encomenda não editável).",
+            "headers": {}
+          },
+          "404": {
+            "description": "encomenda não encontrada.",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/couriers": {
+      "post": {
+        "summary": "Cria um novo entregador.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "createCourier",
+        "tags": [
+          "Couriers"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourierInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Entregador criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Courier"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida (erros de validação).",
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "Lista todos os entregadores com paginação.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "findAllCouriers",
+        "tags": [
+          "Couriers"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página (baseado em zero).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Número de elementos por página.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de entregadores paginada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelCourier"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/couriers/{courierId}": {
+      "put": {
+        "summary": "Atualiza os dados de um entregador existente.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "updateCourier",
+        "tags": [
+          "Couriers"
+        ],
+        "parameters": [
+          {
+            "name": "courierId",
+            "in": "path",
+            "description": "ID do entregador a ser atualizado.",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourierInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Entregador atualizado com sucesso (No Content).",
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida (erros de validação).",
+            "headers": {}
+          },
+          "404": {
+            "description": "Entregador não encontrado.",
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "Busca um entregador pelo ID.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "findCourierById",
+        "tags": [
+          "Couriers"
+        ],
+        "parameters": [
+          {
+            "name": "courierId",
+            "in": "path",
+            "description": "ID do entregador a ser buscado.",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entregador encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Courier"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "404": {
+            "description": "Entregador não encontrado.",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/couriers/payout-calculation": {
+      "post": {
+        "summary": "Calcula o valor de pagamento para um entregador com base na distância.",
+        "deprecated": false,
+        "description": "",
+        "operationId": "calculateCourierPayout",
+        "tags": [
+          "Couriers"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourierPayoutCalculateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cálculo de pagamento realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourierPayoutModel"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DeliveryStatus": {
+        "type": "string",
+        "description": "Status possíveis de uma encomenda.",
+        "enum": [
+          "DRAFT",
+          "WAITING_FOR_ASSIGNMENT",
+          "WAITING_FOR_COURIER",
+          "IN_TRANSIT_TO_RECIPIENT",
+          "DELIVERED"
+        ]
+      },
+      "DeliveryInput": {
+        "type": "object",
+        "required": [
+          "sender",
+          "recipient",
+          "items"
+        ],
+        "properties": {
+          "sender": {
+            "$ref": "#/components/schemas/ContactPointInput"
+          },
+          "recipient": {
+            "$ref": "#/components/schemas/ContactPointInput"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/ItemInput"
+            }
+          }
+        }
+      },
+      "ItemInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "quantity"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do item.",
+            "example": "Livro de Java"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "description": "Quantidade do item.",
+            "example": 2
+          }
+        }
+      },
+      "CourierInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "phone"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do entregador.",
+            "example": "Maria Entregadora"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone do entregador.",
+            "example": "11987654321"
+          }
+        }
+      },
+      "CourierPayoutCalculateRequest": {
+        "type": "object",
+        "properties": {
+          "distanceInKm": {
+            "type": "number",
+            "format": "double",
+            "description": "Distância em quilômetros para o cálculo do pagamento.",
+            "example": 10.5
+          }
+        }
+      },
+      "CourierPayoutModel": {
+        "type": "object",
+        "properties": {
+          "payoutFee": {
+            "type": "number",
+            "format": "float",
+            "description": "Valor do pagamento calculado.",
+            "example": 25
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único do item.",
+            "readOnly": true,
+            "example": "c1d2e3f4-a5b6-7890-1234-567890abcdef"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do item.",
+            "example": "Teclado Mecânico"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Quantidade do item.",
+            "example": 1
+          }
+        }
+      },
+      "AssignedDelivery": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID da encomenda atribuída (que é o deliveryId).",
+            "example": "f0e1d2c3-b4a5-6789-0123-456789abcdef"
+          },
+          "assignedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora em que a encomenda foi atribuída."
+          },
+          "amountOwned": {
+            "type": "number",
+            "format": "float",
+            "description": "Valor a ser pago ao entregador por esta encomenda.",
+            "example": 12.5
+          }
+        }
+      },
+      "ContactPointInput": {
+        "type": "object",
+        "required": [
+          "zipCode",
+          "street",
+          "number",
+          "name",
+          "phone"
+        ],
+        "properties": {
+          "zipCode": {
+            "type": "string",
+            "description": "Código postal do ponto de contato.",
+            "example": "01001-000"
+          },
+          "street": {
+            "type": "string",
+            "description": "Nome da rua.",
+            "example": "Rua da Consolação"
+          },
+          "number": {
+            "type": "string",
+            "description": "Número do endereço.",
+            "example": "123"
+          },
+          "complement": {
+            "type": "string",
+            "description": "Complemento do endereço.",
+            "nullable": true,
+            "example": "Apto 10"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do contato.",
+            "example": "João Silva"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone do contato.",
+            "example": "11999998888"
+          }
+        }
+      },
+      "ContactPoint": {
+        "type": "object",
+        "properties": {
+          "zipCode": {
+            "type": "string",
+            "description": "Código postal do ponto de contato.",
+            "example": "01001-000"
+          },
+          "street": {
+            "type": "string",
+            "description": "Nome da rua.",
+            "example": "Rua da Consolação"
+          },
+          "number": {
+            "type": "string",
+            "description": "Número do endereço.",
+            "example": "123"
+          },
+          "complement": {
+            "type": "string",
+            "description": "Complemento do endereço.",
+            "nullable": true,
+            "example": "Apto 10"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do contato.",
+            "example": "João Silva"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone do contato.",
+            "example": "11999998888"
+          }
+        }
+      },
+      "Courier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único do entregador.",
+            "readOnly": true,
+            "example": "1a2b3c4d-5e6f-7890-abcd-ef1234567890"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do entregador.",
+            "example": "João Entregador"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone do entregador.",
+            "example": "11998877665"
+          },
+          "fulfilledDeliveriesQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Quantidade de entregas concluídas pelo entregador.",
+            "example": 50
+          },
+          "pendingDeliveriesQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Quantidade de entregas pendentes atribuídas ao entregador.",
+            "example": 3
+          },
+          "pendingDeliveries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssignedDelivery"
+            },
+            "description": "Lista de entregas pendentes atribuídas ao entregador."
+          },
+          "lastFulfilledDeliveryAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora da última encomenda concluída pelo entregador.",
+            "nullable": true
+          }
+        }
+      },
+      "Delivery": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/DeliveryStatus",
+            "description": "Status atual da encomenda."
+          },
+          "sender": {
+            "$ref": "#/components/schemas/ContactPoint"
+          },
+          "recipient": {
+            "$ref": "#/components/schemas/ContactPoint"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único da encomenda.",
+            "readOnly": true,
+            "example": "f0e1d2c3-b4a5-6789-0123-456789abcdef"
+          },
+          "courierId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID do entregador atribuído à encomenda.",
+            "nullable": true,
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+          },
+          "placedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora em que a encomenda foi iniciada.",
+            "nullable": true
+          },
+          "assignedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora em que a encomenda foi atribuída a um entregador.",
+            "nullable": true
+          },
+          "expectedDeliveryAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora estimada para a encomenda.",
+            "nullable": true
+          },
+          "fulfilledAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora em que a encomenda foi concluída.",
+            "nullable": true
+          },
+          "distanceFee": {
+            "type": "number",
+            "format": "float",
+            "description": "Taxa de distância da encomenda.",
+            "example": 15.5
+          },
+          "courierPayout": {
+            "type": "number",
+            "format": "float",
+            "description": "Pagamento ao entregador.",
+            "example": 10
+          },
+          "totalCost": {
+            "type": "number",
+            "format": "float",
+            "description": "Custo total da encomenda.",
+            "example": 25.5
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Número total de itens na encomenda.",
+            "example": 3
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            }
+          }
+        }
+      },
+      "PagedModelDelivery": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Delivery"
+            }
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "totalElements": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer"
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "empty": {
+                "type": "boolean"
+              },
+              "sorted": {
+                "type": "boolean"
+              },
+              "unsorted": {
+                "type": "boolean"
+              }
+            }
+          },
+          "pageable": {
+            "type": "object",
+            "properties": {
+              "pageNumber": {
+                "type": "integer"
+              },
+              "pageSize": {
+                "type": "integer"
+              },
+              "offset": {
+                "type": "integer"
+              },
+              "paged": {
+                "type": "boolean"
+              },
+              "unpaged": {
+                "type": "boolean"
+              },
+              "sort": {
+                "type": "object",
+                "properties": {
+                  "empty": {
+                    "type": "boolean"
+                  },
+                  "sorted": {
+                    "type": "boolean"
+                  },
+                  "unsorted": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PagedModelCourier": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Courier"
+            }
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "totalElements": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer"
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "empty": {
+                "type": "boolean"
+              },
+              "sorted": {
+                "type": "boolean"
+              },
+              "unsorted": {
+                "type": "boolean"
+              }
+            }
+          },
+          "pageable": {
+            "type": "object",
+            "properties": {
+              "pageNumber": {
+                "type": "integer"
+              },
+              "pageSize": {
+                "type": "integer"
+              },
+              "offset": {
+                "type": "integer"
+              },
+              "paged": {
+                "type": "boolean"
+              },
+              "unpaged": {
+                "type": "boolean"
+              },
+              "sort": {
+                "type": "object",
+                "properties": {
+                  "empty": {
+                    "type": "boolean"
+                  },
+                  "sorted": {
+                    "type": "boolean"
+                  },
+                  "unsorted": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
