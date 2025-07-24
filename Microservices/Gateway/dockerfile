@@ -1,0 +1,35 @@
+FROM maven:3.9.9-eclipse-temurin-24 AS build
+
+WORKDIR /app
+
+COPY ./pom.xml .
+
+RUN mvn dependency:go-offline -B -Dmaven.repo.local=/root/.m2/repository
+
+COPY . .
+
+RUN chmod +x mvnw
+RUN ./mvnw clean install -B
+
+FROM eclipse-temurin:23-alpine AS runner
+
+WORKDIR /app
+
+RUN addgroup -S javauser && adduser -S -G javauser javauser
+
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apk add --no-cache curl
+
+COPY --from=build /app/target/*.jar delivery-tracking.jar
+
+RUN chown -R javauser:javauser /app
+
+USER javauser
+
+ENV xms=1g
+ENV xmx=5g
+ENV server.port=9091
+
+ENTRYPOINT java --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -Xms${xms} -Xmx${xmx} -XX:+EnableDynamicAgentLoading -Djdk.instrument.traceUsage -XX:MaxRAMPercentage=95.0 -XX:InitialRAMPercentage=50.0 -XX:ReservedCodeCacheSize=64m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m -XX:NativeMemoryTracking=summary -XX:+UseG1GC -jar /app/delivery-tracking.jar
