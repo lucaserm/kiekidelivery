@@ -12,6 +12,7 @@ import site.lmacedo.kiekidelivery.delivery.tracking.domain.model.Delivery;
 import site.lmacedo.kiekidelivery.delivery.tracking.domain.repository.DeliveryRepository;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -20,6 +21,8 @@ import java.util.UUID;
 public class DeliveryPreparationService {
 
     private final DeliveryRepository deliveryRepository;
+    private final DeliveryTimeEstimationService deliveryTimeEstimationService;
+    private final CourierPayoutCalculationService courierPayoutCalculationService;
 
     @Transactional
     public Delivery draft(DeliveryInput input) {
@@ -44,16 +47,16 @@ public class DeliveryPreparationService {
         ContactPoint sender = handleContactPoint(senderInput);
         ContactPoint recipient = handleContactPoint(recipientInput);
 
-        Duration expectedDeliveryTime = Duration.ofHours(3);
-        BigDecimal deliveryFee = new BigDecimal("10");
+        DeliveryEstimate estimate = deliveryTimeEstimationService.estimate(sender, recipient);
 
-        BigDecimal payout = new BigDecimal("10");
+        BigDecimal calculatedPayout = courierPayoutCalculationService.calculatePayout(estimate.getDistanceInKm());
+        BigDecimal deliveryFee = calculateDistanceFee(estimate.getDistanceInKm());
 
         Delivery.PreparationDetails preparationDetails = Delivery.PreparationDetails.builder()
                 .sender(sender)
                 .recipient(recipient)
-                .expectedDeliveryTime(expectedDeliveryTime)
-                .courierPayout(payout)
+                .expectedDeliveryTime(estimate.getEstimatedTime())
+                .courierPayout(calculatedPayout)
                 .distanceFee(deliveryFee)
                 .build();
 
@@ -62,6 +65,12 @@ public class DeliveryPreparationService {
         for (ItemInput item : input.items()) {
             delivery.addItem(item.name(), item.quantity());
         }
+    }
+
+    private BigDecimal calculateDistanceFee(Double distanceInKm) {
+        return new BigDecimal("3")
+                .multiply(new BigDecimal(distanceInKm))
+                .setScale(2, RoundingMode.HALF_EVEN);
     }
 
     private ContactPoint handleContactPoint(ContactPointInput input) {
