@@ -23,7 +23,7 @@ jobs:
       - name: Build and push Docker Courier image
         uses: docker/build-push-action@v3.0.0
         with:
-          context: .
+          context: ./Microservices/Courier-Management
           file: ./Microservices/Courier-Management/dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/apps:${{ github.event.repository.name }}-${{ github.ref_name }}-courier-latest
@@ -32,7 +32,7 @@ jobs:
       - name: Build and push Docker Delivery image
         uses: docker/build-push-action@v3.0.0
         with:
-          context: .
+          context: ./Microservices/Delivery-Tracking
           file: ./Microservices/Delivery-Tracking/dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/apps:${{ github.event.repository.name }}-${{ github.ref_name }}-delivery-latest
